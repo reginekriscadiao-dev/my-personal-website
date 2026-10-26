@@ -83,3 +83,6 @@ a:focus-visible,button:focus-visible{outline:3px solid #d2b4f0;outline-offset:5p
 @keyframes modal-fade{from{opacity:0}to{opacity:1}}
 @keyframes modal-zoom{from{transform:scale(.94)}to{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.reveal{transition-delay:0ms}.section-title h2::after{transform:none;transition:none}.primary-button::before{display:none}.education-item:hover,.plain-list li:hover,.back-top:hover{translate:none}.primary-button:hover span{translate:none}.image-modal:not([hidden]),.image-modal:not([hidden]) img,.hero-socials a:hover svg{animation:none}}
+
+/* Keep the hero action centered when it also uses primary-button styles. */
+.hero-content > .scroll-cue{position:relative;inset:auto;display:flex;width:fit-content;max-width:100%;margin:24px auto 0;text-align:center}
