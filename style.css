@@ -48,3 +48,10 @@ a:focus-visible,button:focus-visible{outline:3px solid #d2b4f0;outline-offset:5p
 @keyframes section-enter{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:760px){.site-header{padding-inline:10px}.hero h1{font-size:clamp(2.2rem,8.5vw,3.7rem)}.hero-description,.work-copy p{font-size:1.15rem}.stats strong{font-size:1.6rem}.stats span{font-size:1.05rem}.certificate-grid{grid-template-columns:1fr;max-width:540px;gap:22px}.section-title h2{font-size:clamp(2.35rem,9.5vw,3.8rem)}.contact-page .contact-section{padding-top:40px}.scroll-cue{display:flex}}
 @media(prefers-reduced-motion:reduce){.contact-page .contact-section{animation:none}.certificate-card.reveal,.contact-details,.work-image,.stats div,.interest-tags span,.tag-row span{transition:none}}
+
+/* Social profiles sit directly below the hero action. */
+.hero-socials{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:18px}
+.hero-socials a{display:grid;place-items:center;width:46px;height:46px;border:1px solid #c28aff70;border-radius:50%;color:var(--lilac);background:#9c4ee712;transition:transform .25s ease,background .25s ease,color .25s ease,border-color .25s ease}
+.hero-socials svg{width:22px;height:22px;fill:currentColor}
+.hero-socials a:hover{transform:translateY(-4px);background:#9c4ee740;color:#fff;border-color:#d2b4f0}
+@media(prefers-reduced-motion:reduce){.hero-socials a{transition:none}.hero-socials a:hover{transform:none}}
