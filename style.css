@@ -55,3 +55,31 @@ a:focus-visible,button:focus-visible{outline:3px solid #d2b4f0;outline-offset:5p
 .hero-socials svg{width:22px;height:22px;fill:currentColor}
 .hero-socials a:hover{transform:translateY(-4px);background:#9c4ee740;color:#fff;border-color:#d2b4f0}
 @media(prefers-reduced-motion:reduce){.hero-socials a{transition:none}.hero-socials a:hover{transform:none}}
+
+/* Motion details shared by the portfolio and contact page. */
+.scroll-progress{position:fixed;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#9c4ee7,#edcfff);transform:scaleX(0);transform-origin:left;z-index:60;pointer-events:none;box-shadow:0 0 12px #c28aff88}
+.reveal{transition-delay:var(--reveal-delay,0ms)}
+.section-title h2{display:inline-block;position:relative}
+.section-title h2::after{content:"";display:block;height:3px;width:64px;margin-top:18px;border-radius:4px;background:linear-gradient(90deg,#b16bf0,transparent);transform:scaleX(.2);transform-origin:left;transition:transform .8s ease .2s}
+.section-title.is-visible h2::after{transform:scaleX(1)}
+.nav-link{position:relative;transition:background .25s,transform .25s,border-color .25s,box-shadow .25s}
+.nav-link:focus-visible,.nav-link:hover{box-shadow:0 0 22px #b365e735}
+.primary-button{position:relative;overflow:hidden;isolation:isolate}
+.primary-button::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 20%,#ffffff28 48%,transparent 75%);transform:translateX(-120%);transition:transform .65s ease;pointer-events:none}
+.primary-button:hover::before,.primary-button:focus-visible::before{transform:translateX(120%)}
+.primary-button span{transition:translate .25s ease}.primary-button:hover span{translate:3px 0}
+.education-item{border-left:2px solid #c28aff35;padding-left:16px;transition:border-color .3s,translate .3s}
+.plain-list li{transition:color .25s,translate .25s}
+.work-image{position:relative;isolation:isolate}
+.work-image::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--pointer-x,50%) var(--pointer-y,50%),#d2b4f033,transparent 65%);opacity:0;transition:opacity .3s}
+.work-number{transition:color .35s,text-shadow .35s}
+.hero-socials a:hover svg{animation:icon-pop .35s ease}
+.image-modal:not([hidden]){animation:modal-fade .22s ease both}
+.image-modal:not([hidden]) img{animation:modal-zoom .3s ease both}
+.modal-close{transition:rotate .25s,color .25s}.modal-close:hover{rotate:90deg;color:var(--lilac)}
+.back-top{display:inline-block;transition:translate .25s,color .25s}.back-top:hover{translate:0 -3px}
+@media(hover:hover) and (pointer:fine){.education-item:hover{border-color:#d2b4f0;translate:6px 0}.plain-list li:hover{color:#fff;translate:6px 0}.work-row:hover .work-number{color:var(--lilac);text-shadow:0 0 30px #9c4ee744}.work-image:hover::after{opacity:1}.tool-badge:hover{box-shadow:0 12px 28px #9c4ee733}.social-links a:hover{box-shadow:0 5px 20px #9c4ee733}}
+@keyframes icon-pop{50%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes modal-fade{from{opacity:0}to{opacity:1}}
+@keyframes modal-zoom{from{transform:scale(.94)}to{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.reveal{transition-delay:0ms}.section-title h2::after{transform:none;transition:none}.primary-button::before{display:none}.education-item:hover,.plain-list li:hover,.back-top:hover{translate:none}.primary-button:hover span{translate:none}.image-modal:not([hidden]),.image-modal:not([hidden]) img,.hero-socials a:hover svg{animation:none}}

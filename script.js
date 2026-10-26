@@ -69,3 +69,81 @@ document.addEventListener("keydown", event => { if (event.key === "Escape" && !m
 }
 
 document.getElementById("year").textContent = new Date().getFullYear();
+
+// A thin reading indicator updates at most once per animation frame.
+const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+const progressBar = document.createElement("div");
+progressBar.className = "scroll-progress";
+progressBar.setAttribute("aria-hidden", "true");
+document.body.append(progressBar);
+let progressPending = false;
+function updateProgress() {
+  const range = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = range > 0 ? Math.min(1, Math.max(0, window.scrollY / range)) : 0;
+  progressBar.style.transform = `scaleX(${progress})`;
+  progressPending = false;
+}
+function scheduleProgress() {
+  if (progressPending) return;
+  progressPending = true;
+  requestAnimationFrame(updateProgress);
+}
+window.addEventListener("scroll", scheduleProgress, { passive: true });
+window.addEventListener("resize", scheduleProgress);
+window.addEventListener("load", scheduleProgress);
+updateProgress();
+
+// Stagger neighboring cards without slowing down long sections.
+document.querySelectorAll(".about-grid, .certificate-grid, .contact-grid").forEach(group => {
+  Array.from(group.children).forEach((item, index) => {
+    item.style.setProperty("--reveal-delay", `${Math.min(index, 3) * 100}ms`);
+  });
+});
+
+// Count each statistic once when it first becomes visible.
+const counterFrames = new Map();
+const counterLabels = new Map();
+function finishCounters() {
+  counterFrames.forEach(frame => cancelAnimationFrame(frame));
+  counterFrames.clear();
+  counterLabels.forEach((label, element) => { element.textContent = label; });
+}
+if ("IntersectionObserver" in window) {
+  const counterObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      counterObserver.unobserve(entry.target);
+      if (motionPreference.matches) return;
+      const label = entry.target.textContent.trim();
+      const match = label.match(/^(\d+)(\+?)$/);
+      if (!match || Number(match[1]) === 0) return;
+      const total = Number(match[1]);
+      const started = performance.now();
+      counterLabels.set(entry.target, label);
+      // Keep the original statistic available to assistive technology.
+      entry.target.setAttribute("aria-label", label);
+      function tick(now) {
+        const fraction = Math.min(1, (now - started) / 900);
+        entry.target.textContent = `${Math.round(total * (1 - (1 - fraction) ** 3))}${match[2]}`;
+        if (fraction < 1) counterFrames.set(entry.target, requestAnimationFrame(tick));
+        else counterFrames.delete(entry.target);
+      }
+      counterFrames.set(entry.target, requestAnimationFrame(tick));
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll(".stats strong").forEach(stat => counterObserver.observe(stat));
+}
+motionPreference.addEventListener("change", () => {
+  if (motionPreference.matches) finishCounters();
+});
+
+// Follow the pointer with a soft highlight on project previews.
+const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+document.querySelectorAll(".work-image").forEach(image => {
+  image.addEventListener("pointermove", event => {
+    if (!finePointer.matches || motionPreference.matches) return;
+    const bounds = image.getBoundingClientRect();
+    image.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
+    image.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
+  });
+});
