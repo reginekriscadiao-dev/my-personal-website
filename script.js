@@ -29,7 +29,7 @@ if ("IntersectionObserver" in window) {
 }
 
 // Update active navigation based on the visible section.
-if ("IntersectionObserver" in window) {
+if ("IntersectionObserver" in window && !document.body.classList.contains("contact-page")) {
   const sectionObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -44,6 +44,7 @@ if ("IntersectionObserver" in window) {
 
 // Certificate click-to-zoom preview.
 const modal = document.querySelector(".image-modal");
+if (modal) {
 const modalImage = modal.querySelector("img");
 const closeModal = modal.querySelector(".modal-close");
 document.querySelectorAll(".certificate-image").forEach(button => {
@@ -64,5 +65,7 @@ function hideModal() {
 closeModal.addEventListener("click", hideModal);
 modal.addEventListener("click", event => { if (event.target === modal) hideModal(); });
 document.addEventListener("keydown", event => { if (event.key === "Escape" && !modal.hidden) hideModal(); });
+
+}
 
 document.getElementById("year").textContent = new Date().getFullYear();
